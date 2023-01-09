@@ -1,0 +1,25 @@
+{
+  "name": "qadr",
+  "version": "0.1.0",
+  "description": "Multi visual media numeric frame",
+  "main": "qadr.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/constantdupuis/QADR.git"
+  },
+  "scripts": {
+    "start" : "node ./qadr.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "frame",
+    "picture",
+    "creative",
+    "coding"
+  ],
+  "author": "Constant Dupuis",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^22.0.0"
+  }
+}
