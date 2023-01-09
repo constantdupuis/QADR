@@ -8,7 +8,7 @@
     "url": "https://github.com/constantdupuis/QADR.git"
   },
   "scripts": {
-    "start" : "node ./qadr.js",
+    "start" : "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
