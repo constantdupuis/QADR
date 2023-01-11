@@ -1,12 +1,18 @@
 const { app, BrowserWindow } = require('electron');
+const path = require('path');
 
 const createWindow = () => {
+  console.log('__dirname ' + __dirname);
+
   const win = new BrowserWindow({
     width: 800,
     height: 600,
+    webPreferences:{
+      preload : path.join(__dirname,'preload.js')
+    }
   });
 
-  win.loadFile('index.html');
+  win.loadFile('./shows/pictureSlideShow/start.html');
 };
 
 app.whenReady().then(() => {
