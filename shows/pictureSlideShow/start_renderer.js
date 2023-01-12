@@ -1,2 +1,8 @@
-const information = document.getElementById('info');
-information.innerText = `This app is using Chrome (v${versions.chrome()}), Node.js (v${versions.node()}), and Electron (v${versions.electron()})`;
+const counter = document.getElementById('counter')
+
+window.electronAPI.handleCounter((event, value) => {
+    const oldValue = Number(counter.innerText)
+    const newValue = oldValue + value
+    counter.innerText = newValue
+    event.sender.send('counter-value', newValue)
+})

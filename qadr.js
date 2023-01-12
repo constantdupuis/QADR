@@ -1,21 +1,49 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 
 const createWindow = () => {
   console.log('__dirname ' + __dirname);
 
-  const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+  const mainWindow = new BrowserWindow({
+    title : "QADR",
+    width: 1600,
+    height: 900,
+    backgroundColor: 'darkorange',
     webPreferences:{
       preload : path.join(__dirname,'preload.js')
     }
+    //,fullscreen : true
   });
 
-  win.loadFile('./shows/pictureSlideShow/start.html');
+  const menu = Menu.buildFromTemplate([
+    {
+      label: app.name,
+      submenu: [
+      {
+        click: () => mainWindow.webContents.send('update-counter', 1),
+        label: 'Increment',
+      },
+      {
+        click: () => mainWindow.webContents.send('update-counter', -1),
+        label: 'Decrement',
+      }
+      ]
+    }
+  ]);
+
+  Menu.setApplicationMenu(menu);
+
+  mainWindow.loadFile('./shows/pictureSlideShow/start.html');
+
+  mainWindow.webContents.openDevTools();
 };
 
 app.whenReady().then(() => {
+
+  ipcMain.on('counter-value', (_event, value) => {
+    console.log(value) // will print value to Node console
+  });
+
   createWindow();
 
   app.on('activate', () => {
