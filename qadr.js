@@ -1,5 +1,6 @@
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
+const express = require('express');
 
 const createWindow = () => {
   console.log('__dirname ' + __dirname);
@@ -45,6 +46,11 @@ app.whenReady().then(() => {
   });
 
   createWindow();
+
+  console.log('Start Express server');
+  var expApp = express();
+  expApp.listen(3000);
+  console.log('Express server started');
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
