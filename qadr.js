@@ -2,6 +2,7 @@ const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 
 const CentralServer = require('./src/controllers/server.js');
+const Pictures = require ('./src/models/pictures.js');
 
 const createWindow = () => {
   console.log('__dirname ' + __dirname);
@@ -50,6 +51,7 @@ app.whenReady().then(() => {
 
   console.log(CentralServer);
   const webServer = new CentralServer();
+  const pictures = new Pictures();
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
