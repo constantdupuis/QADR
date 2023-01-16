@@ -1,16 +1,16 @@
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 
-const CentralServer = require('./src/controllers/server.js');
-const Pictures = require ('./src/models/pictures.js');
+const CentralServer = require('./controllers/server.js');
+const Pictures = require ('./models/pictures.js');
 
 const createWindow = () => {
   console.log('__dirname ' + __dirname);
 
   const mainWindow = new BrowserWindow({
     title : "QADR",
-    width: 1600,
-    height: 900,
+    width: 1200,
+    height: 600,
     backgroundColor: 'darkorange',
     webPreferences:{
       preload : path.join(__dirname,'preload.js')
@@ -18,25 +18,37 @@ const createWindow = () => {
     //,fullscreen : true
   });
 
+  // const menu = Menu.buildFromTemplate([
+  //   {
+  //     label: app.name,
+  //     submenu: [
+  //     {
+  //       click: () => mainWindow.webContents.send('update-counter', 1),
+  //       label: 'Increment',
+  //     },
+  //     {
+  //       click: () => mainWindow.webContents.send('update-counter', -1),
+  //       label: 'Decrement',
+  //     }
+  //     ]
+  //   }
+  // ]);
+
   const menu = Menu.buildFromTemplate([
-    {
-      label: app.name,
-      submenu: [
       {
-        click: () => mainWindow.webContents.send('update-counter', 1),
-        label: 'Increment',
-      },
-      {
-        click: () => mainWindow.webContents.send('update-counter', -1),
-        label: 'Decrement',
+        label: app.name,
+        submenu: [
+        {
+          click: () => mainWindow.webContents.send('change-image', './img/img01.jpg'),
+          label: 'Simulate load image request',
+        }
+        ]
       }
-      ]
-    }
-  ]);
+    ]);
 
   Menu.setApplicationMenu(menu);
 
-  mainWindow.loadFile('./shows/pictureSlideShow/start.html');
+  mainWindow.loadFile('./index.html');
 
   mainWindow.webContents.openDevTools();
 };
