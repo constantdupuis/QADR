@@ -3,6 +3,7 @@ const path = require('path');
 
 const CentralServer = require('./controllers/server.js');
 const Pictures = require ('./models/pictures.js');
+let currentWindow;
 
 const createWindow = () => {
   console.log('__dirname ' + __dirname);
@@ -34,42 +35,43 @@ const createWindow = () => {
   //   }
   // ]);
 
-  const menu = Menu.buildFromTemplate([
-      {
-        label: app.name,
-        submenu: [
-        {
-          click: () => mainWindow.webContents.send('change-image', './img/img01.jpg'),
-          label: 'Simulate load image request',
-        }
-        ]
-      }
-    ]);
-
-  Menu.setApplicationMenu(menu);
-
+  
   mainWindow.loadFile('./index.html');
-
   mainWindow.webContents.openDevTools();
+  currentWindow = mainWindow;
 };
 
 app.whenReady().then(() => {
-
-  ipcMain.on('counter-value', (_event, value) => {
-    console.log(value) // will print value to Node console
-  });
 
   createWindow();
 
   console.log(CentralServer);
   const webServer = new CentralServer();
   const pictures = new Pictures();
-
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
+  
+  const menu = Menu.buildFromTemplate([
+    {
+      label: app.name,
+      submenu: [
+      {
+        click: () => currentWindow.webContents.send('change-image', pictures.nextImage()),
+        label: 'Next Image',
+      }
+      ]
     }
+  ]);
+  Menu.setApplicationMenu(menu);
+
+  ipcMain.on('ready', (event) => {
+    console.log('Renderer ready, send configuration !');
+    currentWindow.webContents.send('change-image', pictures.nextImage());
   });
+});
+
+app.on('activate', () => {
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow();
+  }
 });
 
 app.on('window-all-closed', () => {

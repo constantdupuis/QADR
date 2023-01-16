@@ -32,12 +32,10 @@ class Pictures
 
     nextImage()
     {
-        if( this.imageCursor < this.curImages.length)
-        {
-            let ret = this.curImages[this.imageCursor];
-            this.imageCursor++;
-        }
-        return null;
+        let ret = this.curImages[this.imageCursor];
+        this.imageCursor++;
+
+        return ret;
     }
 
     setSection( newSection)
@@ -107,7 +105,7 @@ class Pictures
                 if( this.allowedExtentions.includes(ext))
                 {
                     //console.log('Add file : ' + file.name);
-                    this.curImages.push(file.name);
+                    this.curImages.push(path.join(curPath,file.name));
                 }
             }
             else if (file.isDirectory())
