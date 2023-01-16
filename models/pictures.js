@@ -7,7 +7,7 @@ class Pictures
     {
         this.allowedExtentions = ['jpg','png','gif'];
         this.basePath = './data/images';
-        this.curSection = '';
+        this.curSection = 'Illustrations';
         this.sections = [];
         this.curImages = [];
         this.imageCursor = 0;

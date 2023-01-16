@@ -3,6 +3,7 @@ const path = require('path');
 
 const CentralServer = require('./controllers/server.js');
 const Pictures = require ('./models/pictures.js');
+const SlideShow = require('./controllers/slideShow.js');
 let currentWindow;
 
 const createWindow = () => {
@@ -37,7 +38,7 @@ const createWindow = () => {
 
   
   mainWindow.loadFile('./index.html');
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
   currentWindow = mainWindow;
 };
 
@@ -45,9 +46,15 @@ app.whenReady().then(() => {
 
   createWindow();
 
+  let slideShowInterval = 10000;
+
   console.log(CentralServer);
   const webServer = new CentralServer();
   const pictures = new Pictures();
+  const slideShow = new SlideShow(slideShowInterval, () => {
+    console.log('Request to show next image');
+    currentWindow.webContents.send('change-image', pictures.nextImage());
+  });
   
   const menu = Menu.buildFromTemplate([
     {
@@ -62,9 +69,19 @@ app.whenReady().then(() => {
   ]);
   Menu.setApplicationMenu(menu);
 
+  
+  const slideShowFn = () =>
+  {
+    currentWindow.webContents.send('change-image', pictures.nextImage());
+    setTimeout( slideShowFn, slideShowInterval);
+  };
+
   ipcMain.on('ready', (event) => {
     console.log('Renderer ready, send configuration !');
+
     currentWindow.webContents.send('change-image', pictures.nextImage());
+    //setTimeout( slideShowFn, slideShowInterval);
+    slideShow.start();
   });
 });
 

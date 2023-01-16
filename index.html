@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" href="css/main.css">
     <meta charset="UTF-8" />
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta
@@ -13,8 +14,12 @@
     />
     <title>Pictures Slide Show</title>
   </head>
-  <body style="background-color:darkorange;">
-    <img id="mainImage"/>
+  <body>
+    <div class="imgbox">
+      <img id="image0" class="center-fit fade-in"/>
+      <img id="image1" class="center-fit"/>
+    </div>
+    <!-- <img id="mainImage"/> -->
   </body>
   <script src="./renderer.js"></script>
 </html>
