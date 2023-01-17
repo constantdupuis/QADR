@@ -3,11 +3,11 @@ const path = require('path');
 
 class Pictures
 {
-    constructor()
+    constructor( baseImagesPath)
     {
         this.allowedExtentions = ['jpg','png','gif'];
         //this.basePath = './data/images';
-        this.basePath = '/home/cdupuis/Pictures/ForPhotoframe';
+        this.basePath = baseImagesPath;
         this.curSection = '';
         this.sections = [];
         this.curImages = [];
@@ -54,12 +54,12 @@ class Pictures
 
         console.log('Sections :');
         this.sections.forEach( (value, index) =>{
-            console.log('Section ' + index + ' ' + value);
+            console.log(' - section ' + index + ' ' + value);
         });
         
         // console.log('Loaded images :');
         // this.curImages.forEach( (value, index) =>{
-        //     console.log('image ' + index + ' ' + value);
+        //     console.log(' - image ' + index + ' ' + value);
         // });
     }
 
@@ -113,24 +113,6 @@ class Pictures
         // get file extension
         const extension = filename.substring(filename.lastIndexOf('.') + 1, filename.length);
         return extension;
-    }
-
-    async #readFiles(directory)
-    {
-        const files = await fs.promises.opendir(directory);
-        for await (const file of files) {
-            if( file.isDirectory())
-            {
-                let cur = path.join(directory, file.name);
-                console.log('Folder : ' +  cur);
-                await this._readFiles(cur);
-            }
-            else if(file.isFile())
-            {
-                let cur = path.join(directory, file.name);
-                console.log('File : ' + cur);
-            }
-        }
     }
 }
 

@@ -1,5 +1,6 @@
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
+const Store = require('electron-store');
 
 const CentralServer = require('./controllers/server.js');
 const Pictures = require ('./models/pictures.js');
@@ -44,13 +45,26 @@ const createWindow = () => {
 
 app.whenReady().then(() => {
 
+  const store = new Store();
+  if( !store.get('imagesPath'))
+  {
+    console.log('Images path set to default : "/home/cdupuis/Pictures/ForPhotoframe"');
+    store.set('imagesPath', '/home/cdupuis/Pictures/ForPhotoframe');
+  }
+
+  if( !store.get('slideShowInterval'))
+  {
+    console.log('Slide show interval set to default : 10000');
+    store.set('slideShowInterval', 10000);
+  }
+
   createWindow();
 
-  let slideShowInterval = 10000;
-
+  let slideShowInterval = store.get('slideShowInterval');
+  
   console.log(CentralServer);
-  const webServer = new CentralServer('/home/cdupuis/Pictures/ForPhotoframe');
-  const pictures = new Pictures();
+  const webServer = new CentralServer(store.get('imagesPath'));
+  const pictures = new Pictures(store.get('imagesPath'));
   const slideShow = new SlideShow(slideShowInterval, () => {
     console.log('Request to show next image');
     currentWindow.webContents.send('change-image', pictures.nextImage());
@@ -69,18 +83,11 @@ app.whenReady().then(() => {
   ]);
   Menu.setApplicationMenu(menu);
 
-  
-  const slideShowFn = () =>
-  {
-    currentWindow.webContents.send('change-image', pictures.nextImage());
-    setTimeout( slideShowFn, slideShowInterval);
-  };
-
   ipcMain.on('ready', (event) => {
     console.log('Renderer ready, send configuration !');
 
     currentWindow.webContents.send('change-image', pictures.nextImage());
-    //setTimeout( slideShowFn, slideShowInterval);
+
     slideShow.start();
   });
 });
