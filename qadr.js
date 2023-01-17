@@ -38,7 +38,7 @@ const createWindow = () => {
 
   
   mainWindow.loadFile('./index.html');
-  //mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
   currentWindow = mainWindow;
 };
 
@@ -49,7 +49,7 @@ app.whenReady().then(() => {
   let slideShowInterval = 10000;
 
   console.log(CentralServer);
-  const webServer = new CentralServer();
+  const webServer = new CentralServer('/home/cdupuis/Pictures/ForPhotoframe');
   const pictures = new Pictures();
   const slideShow = new SlideShow(slideShowInterval, () => {
     console.log('Request to show next image');

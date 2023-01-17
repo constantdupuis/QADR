@@ -6,8 +6,9 @@ class Pictures
     constructor()
     {
         this.allowedExtentions = ['jpg','png','gif'];
-        this.basePath = './data/images';
-        this.curSection = 'Illustrations';
+        //this.basePath = './data/images';
+        this.basePath = '/home/cdupuis/Pictures/ForPhotoframe';
+        this.curSection = '';
         this.sections = [];
         this.curImages = [];
         this.imageCursor = 0;
@@ -60,18 +61,6 @@ class Pictures
         // this.curImages.forEach( (value, index) =>{
         //     console.log('image ' + index + ' ' + value);
         // });
-
-        //this.#readFiles(this.basePath);
-
-        // const baseDir = fs.opendirSync(this.path);
-        // let fileNfo;
-        // while((fileNfo = baseDir.readSync()) !== null)
-        // {
-        //     if( fileNfo.isDirectory())
-        //         console.log('Folder : ' + fileNfo.name);
-        //     else if(fileNfo.isFile())
-        //         console.log('File   : ' + fileNfo.name);
-        // }
     }
 
     async #getSections()
@@ -84,6 +73,7 @@ class Pictures
                 this.sections.push(file.name);
             }
         }
+        this.sections.sort();
     }
 
     async #loadImages()
@@ -92,6 +82,7 @@ class Pictures
         let curPath = path.join(this.basePath, this.curSection);
         console.log('Load pictures from [' + curPath + ']');
         await this.#loadImagesRecursive(curPath);
+        this.curImages.sort();
     }
 
     async #loadImagesRecursive(curPath)

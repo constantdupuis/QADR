@@ -4,38 +4,41 @@ class SlideShow
     constructor(interval, timerCallback)
     {
         this.callback = timerCallback;
-        this.loopRunning = false;
-        this.interval = interval;
+        this.isSlideShowRunning = false;
+        this.intervalDuration = interval;
+        this.intervalId = 0;
+        this.paused = false;
     }
 
     start() {
-        this.loopRunning = true;
-        this.#loop();
+        if(this.isSlideShowRunning == true ) return;
+
+        this.intervalId = setInterval(() => {
+            if( !this.paused) this.callback();
+        }, this.intervalDuration);
+        
+        this.isSlideShowRunning = true;
     }
 
     pause() {
-
+        this.pause = true;
     }
 
     resume(){
-
+        this.pause = false;
     }
 
     stop()  {
-        this.loopRunning = false;
+        if( this.isSlideShowRunning == false) return;
+        clearInterval(this.intervalId);
+        this.isSlideShowRunning = false;
     }
 
-    async #loop()
+    changeInterval( newIntervalDuration) 
     {
-        while(this.loopRunning)
-        {
-            await this.#sleep(this.interval);
-            this.callback();
-        }
-    }
-
-    #sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
+        this.intervalDuration = newIntervalDuration();
+        this.stop();
+        this.start();
     }
 }
 

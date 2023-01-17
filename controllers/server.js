@@ -5,8 +5,9 @@ const { Server } = require("socket.io");
 
 class CentralServer
 {
-    constructor()
+    constructor(imagesPath)
     {
+        this.imagesPath = imagesPath;
         this.port = 3000;
         this.app =  express();
         this.httpServer = createServer(this.app);
@@ -17,6 +18,9 @@ class CentralServer
         this.app.get('/', function(req, res){
             res.send('GET request to homepage');
         });
+
+        // test serving images from the filesystem
+        this.app.use('/images', express.static(this.imagesPath));
 
         this.io.on("connection", (socket) => {
             console.log('Made socket connection');
