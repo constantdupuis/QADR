@@ -4,7 +4,8 @@ const Store = require('electron-store');
 
 const CentralServer = require('./controllers/server.js');
 const Pictures = require ('./models/pictures.js');
-const SlideShow = require('./controllers/slideShow.js');
+const ExtInterval = require('./controllers/extInterval.js');
+
 let currentWindow;
 
 const createWindow = () => {
@@ -14,9 +15,9 @@ const createWindow = () => {
     title : "QADR",
     width: 1200,
     height: 600,
-    backgroundColor: 'darkorange',
+    backgroundColor: 'darkslategray',
     webPreferences:{
-      preload : path.join(__dirname,'preload.js')
+      preload : path.join(__dirname,'../renderer/preload.js')
     }
     //,fullscreen : true
   });
@@ -38,7 +39,7 @@ const createWindow = () => {
   // ]);
 
   
-  mainWindow.loadFile('./index.html');
+  mainWindow.loadFile('./src/renderer/index.html');
   mainWindow.webContents.openDevTools();
   currentWindow = mainWindow;
 };
@@ -62,10 +63,9 @@ app.whenReady().then(() => {
 
   let slideShowInterval = store.get('slideShowInterval');
   
-  console.log(CentralServer);
   const webServer = new CentralServer(store.get('imagesPath'));
   const pictures = new Pictures(store.get('imagesPath'));
-  const slideShow = new SlideShow(slideShowInterval, () => {
+  const slideShow = new ExtInterval(slideShowInterval, () => {
     console.log('Request to show next image');
     currentWindow.webContents.send('change-image', pictures.nextImage());
   });

@@ -6,14 +6,13 @@ class Pictures
     constructor( baseImagesPath)
     {
         this.allowedExtentions = ['jpg','png','gif'];
-        //this.basePath = './data/images';
         this.basePath = baseImagesPath;
         this.curSection = '';
         this.sections = [];
         this.curImages = [];
         this.imageCursor = 0;
 
-        this.#createCache();
+        this.#createInitialCache();
     }
 
     sections()
@@ -35,19 +34,21 @@ class Pictures
     {
         let ret = this.curImages[this.imageCursor];
         this.imageCursor++;
+        this.imageCursor = this.imageCursor % this.curImages.length;
 
         return ret;
     }
 
-    setSection( newSection)
+    async setSection( newSection)
     {
-        if( newSection != this.curSection)
+        if( newSection != this.curSection && this.sections.incldues(newSection))
         {
-
+            this.curSection = newSection;
+            await this.#loadImages();
         }
     }
 
-    async #createCache()
+    async #createInitialCache()
     {
         await this.#getSections();
         await this.#loadImages();

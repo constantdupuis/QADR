@@ -1,4 +1,4 @@
-class SlideShow
+class ExtInterval
 {
 
     constructor(interval, timerCallback)
@@ -42,4 +42,4 @@ class SlideShow
     }
 }
 
-module.exports = SlideShow;
+module.exports = ExtInterval;

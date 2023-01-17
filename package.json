@@ -2,7 +2,7 @@
   "name": "qadr",
   "version": "0.1.0",
   "description": "Multi visual media numeric frame",
-  "main": "qadr.js",
+  "main": "src/main/qadr.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/constantdupuis/QADR.git"
