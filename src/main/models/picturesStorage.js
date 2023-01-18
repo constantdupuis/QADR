@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 
-class Pictures
+class PicturesStorage
 {
-    constructor( baseImagesPath)
+    constructor(baseImagesPath)
     {
         this.allowedExtentions = ['jpg','png','gif'];
         this.basePath = baseImagesPath;
@@ -15,12 +15,12 @@ class Pictures
         this.#createInitialCache();
     }
 
-    sections()
+    getSections()
     {
         return this.sections;
     }
 
-    images()
+    getImages()
     {
         return this.curImages;
     }
@@ -30,7 +30,7 @@ class Pictures
         this.imageCursor = 0;
     }
 
-    nextImage()
+    getNextImage()
     {
         let ret = this.curImages[this.imageCursor];
         this.imageCursor++;
@@ -41,7 +41,7 @@ class Pictures
 
     async setSection( newSection)
     {
-        if( newSection != this.curSection && this.sections.incldues(newSection))
+        if( newSection != this.curSection && this.getSections.incldues(newSection))
         {
             this.curSection = newSection;
             await this.#loadImages();
@@ -50,7 +50,7 @@ class Pictures
 
     async #createInitialCache()
     {
-        await this.#getSections();
+        await this.#loadSections();
         await this.#loadImages();
 
         console.log('Sections :');
@@ -64,7 +64,7 @@ class Pictures
         // });
     }
 
-    async #getSections()
+    async #loadSections()
     {
         this.sections = [];
         const files = await fs.promises.opendir(this.basePath);
@@ -117,4 +117,4 @@ class Pictures
     }
 }
 
-module.exports = Pictures;
+module.exports = PicturesStorage;

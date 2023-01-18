@@ -2,6 +2,17 @@
 
 Numeric multi media frame, should allow to display picture slide show or generative arts developped in JS (with HTML canvas, p5.js, ThreeJS...).
 
+## Config
+
+App config is located in path returned by app.getPath(name):
+- %APPDATA% on Windows
+- $XDG_CONFIG_HOME or ~/.config on Linux
+- ~/Library/Application Support on macOS
+
+In a folder called `qadr` and file `config.json`.
+
+
+
 # Resources
 
 - css selector : https://www.w3schools.com/cssref/css_selectors.php

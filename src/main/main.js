@@ -2,14 +2,16 @@ const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 const Store = require('electron-store');
 
-const CentralServer = require('./controllers/server.js');
-const Pictures = require ('./models/pictures.js');
+const APIServer = require('./controllers/apiServer.js');
+const PicturesStorage = require ('./models/picturesStorage.js');
 const ExtInterval = require('./controllers/extInterval.js');
+const RemoteCtrlRouter = require('./routes/remoteControl');
+const k = require('../common/constants');
 
 let currentWindow;
 
 const createWindow = () => {
-  console.log('__dirname ' + __dirname);
+  //console.log('__dirname ' + __dirname);
 
   const mainWindow = new BrowserWindow({
     title : "QADR",
@@ -17,7 +19,8 @@ const createWindow = () => {
     height: 600,
     backgroundColor: 'darkslategray',
     webPreferences:{
-      preload : path.join(__dirname,'../renderer/preload.js')
+      preload : path.join(__dirname,'../renderer/preload.js'),
+      sandbox : false
     }
     //,fullscreen : true
   });
@@ -63,30 +66,33 @@ app.whenReady().then(() => {
 
   let slideShowInterval = store.get('slideShowInterval');
   
-  const webServer = new CentralServer(store.get('imagesPath'));
-  const pictures = new Pictures(store.get('imagesPath'));
+  const webServer = new APIServer(store.get('imagesPath'), 3000);
+  const pictures = new PicturesStorage(store.get('imagesPath'));
+  const remoteCtrlRouter = new RemoteCtrlRouter(pictures);
+  webServer.addRoutes( remoteCtrlRouter.getRouter());
+
   const slideShow = new ExtInterval(slideShowInterval, () => {
-    console.log('Request to show next image');
-    currentWindow.webContents.send('change-image', pictures.nextImage());
+    //console.log('Request to show next image');
+    currentWindow.webContents.send(k.CH_UPDATE_IMAGE, pictures.getNextImage());
   });
   
-  const menu = Menu.buildFromTemplate([
-    {
-      label: app.name,
-      submenu: [
-      {
-        click: () => currentWindow.webContents.send('change-image', pictures.nextImage()),
-        label: 'Next Image',
-      }
-      ]
-    }
-  ]);
-  Menu.setApplicationMenu(menu);
+  // const menu = Menu.buildFromTemplate([
+  //   {
+  //     label: app.name,
+  //     submenu: [
+  //     {
+  //       click: () => currentWindow.webContents.send('change-image', pictures.nextImage()),
+  //       label: 'Next Image',
+  //     }
+  //     ]
+  //   }
+  // ]);
+  // Menu.setApplicationMenu(menu);
 
-  ipcMain.on('ready', (event) => {
+  ipcMain.on(k.CH_RENDERER_READY, (event) => {
     console.log('Renderer ready, send configuration !');
 
-    currentWindow.webContents.send('change-image', pictures.nextImage());
+    currentWindow.webContents.send(k.CH_UPDATE_IMAGE, pictures.getNextImage());
 
     slideShow.start();
   });

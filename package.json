@@ -2,7 +2,7 @@
   "name": "qadr",
   "version": "0.1.0",
   "description": "Multi visual media numeric frame",
-  "main": "src/main/qadr.js",
+  "main": "src/main/main.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/constantdupuis/QADR.git"
@@ -26,6 +26,7 @@
   "dependencies": {
     "electron-store": "^8.1.0",
     "express": "^4.18.2",
+    "pug": "^3.0.2",
     "socket.io": "^4.5.4"
   }
 }

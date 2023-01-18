@@ -4,7 +4,7 @@ const image0 = document.getElementById('image0');
 
 window.electronAPI.handleImageChanges((event, imgUrl) => {
 
-    console.log('Load image [' + imgUrl + ']');
+    //console.log('Load image [' + imgUrl + ']');
     // fade-out current image
     image0.classList.remove('fade-in');
     image0.classList.add('fade-out');
@@ -20,4 +20,4 @@ window.electronAPI.handleImageChanges((event, imgUrl) => {
     //event.sender.send('<message>', "data");
 });
 
-window.electronAPI.ready();
+window.electronAPI.rendererReady();

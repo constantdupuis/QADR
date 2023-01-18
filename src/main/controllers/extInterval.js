@@ -40,6 +40,11 @@ class ExtInterval
         this.stop();
         this.start();
     }
+
+    isPaused()
+    {
+        return this.pause;
+    }
 }
 
 module.exports = ExtInterval;
