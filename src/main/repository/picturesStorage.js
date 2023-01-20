@@ -41,11 +41,13 @@ class PicturesStorage
 
     async setSection( newSection)
     {
-        if( newSection != this.curSection && this.getSections.incldues(newSection))
+        if( newSection != this.curSection && this.getSections.includes(newSection))
         {
             this.curSection = newSection;
             await this.#loadImages();
+            return true;
         }
+        return false;
     }
 
     async #createInitialCache()

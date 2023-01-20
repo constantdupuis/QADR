@@ -1,10 +1,13 @@
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
-const Store = require('electron-store');
 
 const APIServer = require('./controllers/apiServer.js');
-const PicturesStorage = require ('./models/picturesStorage.js');
+const PicturesStorage = require ('./repository/picturesStorage.js');
 const ExtInterval = require('./controllers/extInterval.js');
+
+const AppConfig = require('./repository/appConfig');
+const Repository = require('./repository/repository');
+
 const RemoteCtrlRouter = require('./routes/remoteControl');
 const k = require('../common/constants');
 
@@ -49,18 +52,8 @@ const createWindow = () => {
 
 app.whenReady().then(() => {
 
-  const store = new Store();
-  if( !store.get('imagesPath'))
-  {
-    console.log('Images path set to default : "/home/cdupuis/Pictures/ForPhotoframe"');
-    store.set('imagesPath', '/home/cdupuis/Pictures/ForPhotoframe');
-  }
-
-  if( !store.get('slideShowInterval'))
-  {
-    console.log('Slide show interval set to default : 10000');
-    store.set('slideShowInterval', 10000);
-  }
+  const appConfig = new AppConfig();
+  
 
   createWindow();
 
@@ -68,6 +61,7 @@ app.whenReady().then(() => {
   
   const webServer = new APIServer(store.get('imagesPath'), 3000);
   const pictures = new PicturesStorage(store.get('imagesPath'));
+
   const remoteCtrlRouter = new RemoteCtrlRouter(pictures);
   webServer.addRoutes( remoteCtrlRouter.getRouter());
 

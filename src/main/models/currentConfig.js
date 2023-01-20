@@ -1,5 +1,11 @@
 class CurrentConfig{
-    currentSection = '';
-    sections = [];
-    slideShowInterval = 10000;
+    currentSection;
+    sections;
+    slideShowInterval;
+    constructor( currentSection, sections, slideShowInterval )
+    {
+        this.currentSection = currentSection;
+        this.sections = sections;
+        
+    }
 }
