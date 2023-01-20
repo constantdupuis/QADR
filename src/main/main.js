@@ -11,8 +11,6 @@ const Repository = require('./repository/repository');
 const RemoteCtrlRouter = require('./routes/remoteControl');
 const k = require('../common/constants');
 
-let currentWindow;
-
 const createWindow = () => {
   //console.log('__dirname ' + __dirname);
 
@@ -47,46 +45,39 @@ const createWindow = () => {
   
   mainWindow.loadFile('./src/renderer/index.html');
   mainWindow.webContents.openDevTools();
-  currentWindow = mainWindow;
+  return mainWindow;
 };
 
 app.whenReady().then(() => {
 
   const appConfig = new AppConfig();
+  console.log(appConfig.toString());
+  if( !appConfig.isConfigOk)
+  {
+    console.log(`Application configuration issue : \n${appConfig.errorMessage()}`);
+    app.quit();
+  }
+
+  const repo = new Repository(appConfig);
+
+  const mainWin = createWindow();
+
+  let slideShowInterval = appConfig.getSlideShowInterval();
   
+  const webServer = new APIServer(appConfig.getImagesPath(), 3000);
 
-  createWindow();
-
-  let slideShowInterval = store.get('slideShowInterval');
-  
-  const webServer = new APIServer(store.get('imagesPath'), 3000);
-  const pictures = new PicturesStorage(store.get('imagesPath'));
-
-  const remoteCtrlRouter = new RemoteCtrlRouter(pictures);
+  const remoteCtrlRouter = new RemoteCtrlRouter(repo);
   webServer.addRoutes( remoteCtrlRouter.getRouter());
 
   const slideShow = new ExtInterval(slideShowInterval, () => {
     //console.log('Request to show next image');
-    currentWindow.webContents.send(k.CH_UPDATE_IMAGE, pictures.getNextImage());
+    mainWin.webContents.send(k.CH_UPDATE_IMAGE, repo.pictureStorage.getNextImage());
   });
-  
-  // const menu = Menu.buildFromTemplate([
-  //   {
-  //     label: app.name,
-  //     submenu: [
-  //     {
-  //       click: () => currentWindow.webContents.send('change-image', pictures.nextImage()),
-  //       label: 'Next Image',
-  //     }
-  //     ]
-  //   }
-  // ]);
-  // Menu.setApplicationMenu(menu);
 
   ipcMain.on(k.CH_RENDERER_READY, (event) => {
     console.log('Renderer ready, send configuration !');
 
-    currentWindow.webContents.send(k.CH_UPDATE_IMAGE, pictures.getNextImage());
+    mainWin.webContents.send(k.CH_UPDATE_IMAGE, repo.pictureStorage.getNextImage());
 
     slideShow.start();
   });

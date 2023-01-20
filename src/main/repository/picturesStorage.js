@@ -60,10 +60,10 @@ class PicturesStorage
             console.log(' - section ' + index + ' ' + value);
         });
         
-        // console.log('Loaded images :');
-        // this.curImages.forEach( (value, index) =>{
-        //     console.log(' - image ' + index + ' ' + value);
-        // });
+        console.log('Loaded images :');
+        this.curImages.forEach( (value, index) =>{
+            console.log(' - image ' + index + ' ' + value);
+        });
     }
 
     async #loadSections()

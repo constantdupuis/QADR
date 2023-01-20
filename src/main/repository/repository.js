@@ -10,7 +10,7 @@ class Repository
     constructor( appConfig )
     {
         this.pictureStorage = new PictureStorage(appConfig.getImagesPath());
-        this.remoteParameters = new RemoteParameters(this.pictureStorage, this.appConfig);
+        this.remoteParameters = new RemoteParameters(this.pictureStorage, appConfig);
     }
 }
 

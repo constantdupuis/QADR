@@ -1,15 +1,20 @@
 const express = require('express');
 
+const RemoteParametersModel = require('../models/remoteParameters');
+
 class RemoteControlRouter{
-    constructor( picturesStorage)
+    constructor( repository)
     {
         this.router = express.Router();
-        this.picturesStorage = picturesStorage;
+        this.repo = repository;
 
         this.router.get('/remoteCtrl/config', (req, res) => {
-            console.log('picturesStorage');
-            console.log(this.picturesStorage);
-            res.send(JSON.stringify({'interval': 10000, 'sections': this.picturesStorage.getSections() }));
+            console.log('RemoteControlRouter::get[/remoteCtrl/config]');
+            let data = new RemoteParametersModel();
+            data.section = this.repo.remoteParameters.getSection();
+            data.sections = this.repo.remoteParameters.getSections();
+            data.slideShowInterval = this.repo.remoteParameters.getSlideShowInterval();
+            res.send(JSON.stringify(data));
         });
     }
 

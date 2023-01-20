@@ -13,14 +13,14 @@ class RemoteParameters
 
     getSection()
     {
-        return this.configStore.getSection();
+        return this.appConfig.getSection();
     }
 
     setSection(newSection)
     {
         if( this.pictureStorage.setSection(newSection))
         {
-            this.configStore.setSection(newSection);
+            this.appConfig.setSection(newSection);
         }
         else
         {
