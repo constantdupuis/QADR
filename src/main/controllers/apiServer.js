@@ -1,16 +1,29 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const { engine } = require('express-handlebars');
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 
 
 class APIServer
 {
-    constructor(imagesPath, port)
+    constructor(imagesPath, port, viewsPath)
     {
         this.imagesPath = imagesPath;
         this.port = port;
+        this.viewsPath = viewsPath;
 
         this.app = express();
+        this.app.use(bodyParser.urlencoded({extended:false}));
+        this.app.use(bodyParser.json());
+
+        this.app.engine('hbs', engine());
+        this.app.set('view engine','hbs');
+        this.app.set('views',this.viewsPath);
+
+        console.log(`cwd in apiServer : ${process.cwd()}`);
+        console.log('__dirname in apiServer ' + __dirname);
+        
         this.httpServer = createServer(this.app);
         this.io = new Server(this.httpServer);
 
@@ -20,6 +33,10 @@ class APIServer
 
         // test serving images from the filesystem
         this.app.use('/images', express.static(this.imagesPath));
+
+        // this.app.use((req, res, next) =>{
+        //     res.status(404).render('404', {pageTitle : "Page Not Found"});
+        // });
 
         this.io.on("connection", (socket) => {
             console.log('Made socket connection');

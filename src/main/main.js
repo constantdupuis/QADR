@@ -64,7 +64,8 @@ app.whenReady().then(() => {
 
   let slideShowInterval = appConfig.getSlideShowInterval();
   
-  const webServer = new APIServer(appConfig.getImagesPath(), 3000);
+  const webServer = new APIServer(appConfig.getImagesPath(), 3000, path.join(__dirname, './views'));
+  //const webServer = new APIServer(appConfig.getImagesPath(), 3000, './views');
 
   const remoteCtrlRouter = new RemoteCtrlRouter(repo);
   webServer.addRoutes( remoteCtrlRouter.getRouter());
