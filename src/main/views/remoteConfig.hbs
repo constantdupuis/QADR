@@ -1,12 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="http://localhost:3000/static/css/bulma.min.css">
+    <title>QADR Remote</title>
 </head>
+
 <body>
-    
+    {{!-- <div class="container">
+        <div class="notification is-primary">
+            This container is <strong>fullwidth</strong> <em>until</em> the <code>$widescreen</code> breakpoint.
+        </div>
+    </div> --}}
+    <div class="container has-background-primary">
+        <div class="notification is-primary">
+            <h1 class="title">QADR Remote</h1>
+        </div>
+    </div>
+
+    <section class="section">
+        <div class="container">
+            <ul>
+                <li>Available sections : {{ sections }}</li>
+                <li>Current section : {{ currentSection }}</li>
+                <li>Slide show interval : {{ slideShowInterval }}</li>
+            </ul>
+        </div>
+    </section>
 </body>
+
 </html>

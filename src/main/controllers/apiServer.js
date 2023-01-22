@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const { engine } = require('express-handlebars');
 const { createServer } = require("http");
 const { Server } = require("socket.io");
+const path = require('path');
 
 
 class APIServer
@@ -19,7 +20,8 @@ class APIServer
 
         this.app.engine('hbs', engine());
         this.app.set('view engine','hbs');
-        this.app.set('views',this.viewsPath);
+        //this.app.set('views',this.viewsPath);
+        this.app.set('views', path.join(process.cwd(), 'src', 'main', 'views'));
 
         console.log(`cwd in apiServer : ${process.cwd()}`);
         console.log('__dirname in apiServer ' + __dirname);
@@ -33,6 +35,7 @@ class APIServer
 
         // test serving images from the filesystem
         this.app.use('/images', express.static(this.imagesPath));
+        this.app.use('/static', express.static(path.join(process.cwd(), 'src', 'main', 'static')));
 
         // this.app.use((req, res, next) =>{
         //     res.status(404).render('404', {pageTitle : "Page Not Found"});

@@ -15,7 +15,12 @@ class RemoteControlRouter{
             // data.sections = this.repo.remoteParameters.getSections();
             // data.slideShowInterval = this.repo.remoteParameters.getSlideShowInterval();
             // res.send(JSON.stringify(data));
-            res.render('remoteConfig');
+            res.render('remoteConfig', {
+                currentSection : (this.repo.remoteParameters.getSection() == '' ? 'All' : this.repo.remoteParameters.getSection()),
+                sections : this.repo.remoteParameters.getSections(),
+                slideShowInterval : this.repo.remoteParameters.getSlideShowInterval(),
+                layout: false
+            });
         });
     }
 
