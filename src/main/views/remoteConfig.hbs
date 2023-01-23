@@ -15,21 +15,41 @@
             This container is <strong>fullwidth</strong> <em>until</em> the <code>$widescreen</code> breakpoint.
         </div>
     </div> --}}
-    <div class="container has-background-primary">
+    <div class="container is-max-desktop has-background-primary">
         <div class="notification is-primary">
             <h1 class="title">QADR Remote</h1>
         </div>
     </div>
 
     <section class="section">
-        <div class="container">
-            <ul>
-                <li>Available sections : {{ sections }}</li>
-                <li>Current section : {{ currentSection }}</li>
-                <li>Slide show interval : {{ slideShowInterval }}</li>
-            </ul>
+        <div class="container  is-max-desktop">
+            <div class="field">
+                <label class="label">Section to show</label>
+                <div class="control">
+                    {{#each sectionsStatus}}
+                    <button class="button is-primary {{#if this.active}}{{else}}is-outlined{{/if}}">{{this.name}}</button>
+                    {{/each}}
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Slideshow delay (ms)</label>
+                <div class="control">
+                    <input class="input" type="text" placeholder="Text input" value="{{ slideShowInterval }}">
+                </div>
+            </div>
+
+             <div class="field">
+                <label class="label">Transport</label>
+                <div class="control">
+                    <button class="button is-primary is-rounded">Pause</button>
+                </div>
+            </div>
+
         </div>
+
     </section>
+
 </body>
 
 </html>

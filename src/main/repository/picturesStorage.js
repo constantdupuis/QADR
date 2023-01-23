@@ -7,7 +7,7 @@ class PicturesStorage
     {
         this.allowedExtentions = ['jpg','png','gif'];
         this.basePath = baseImagesPath;
-        this.curSection = '';
+        this.curSection = 'All';
         this.sections = [];
         this.curImages = [];
         this.imageCursor = 0;
@@ -82,7 +82,17 @@ class PicturesStorage
     async #loadImages()
     {
         this.curImages = [];
-        let curPath = path.join(this.basePath, this.curSection);
+        
+        let curPath = '';
+        if( this.curSection == 'All')
+        {
+            curPath = path.join(this.basePath);
+        }
+        else
+        {
+            curPath = path.join(this.basePath, this.curSection);
+        }
+
         console.log('Load pictures from [' + curPath + ']');
         await this.#loadImagesRecursive(curPath);
         this.curImages.sort();
