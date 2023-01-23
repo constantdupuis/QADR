@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://localhost:3000/static/bootstrap/css/bootstrap.min.css">
+    <script src="http://localhost:3000/static/bootstrap/js/bootstrap.min.js"></script>
+    <title>QADR Remote</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg  navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">QADR Remote</a>
+        </div>
+    </nav>
+    {{!-- <div class="container bg-primary text-white">
+        <h1 class="title">QADR Remote</h1>
+    </div> --}}
+
+    <div class="container d-flex flex-column my-3">
+        <div class="p-2  align-self-center">
+            <h4 class="text-muted">Select Section</h4>
+        </div>
+
+        <div class="p-2  align-self-center">
+            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                {{#each sectionsStatus}}
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio{{@index}}" autocomplete="off" {{#if
+                    this.active}}checked{{/if}} />
+                <label class="btn btn-outline-primary" for="btnradio{{@index}}">{{this.name}}</label>
+                {{/each}}
+            </div>
+        </div>
+
+        <div class="p-2  align-self-center">
+            <div class="p-2  align-self-center">
+                <h4 class="text-muted">Slideshow interval</h4>
+            </div>
+        </div>
+
+        <div class="p-2  align-self-center">
+            <div class="p-2  align-self-center">
+                <h4 class="text-muted">Transport</h4>
+            </div>
+        </div>
+
+    </div>
+
+
+    <section class="section">
+        <div class="container is-max-desktop">
+
+            <div class="field">
+                <label class="label">Slideshow delay (ms)</label>
+                <div class="control">
+                    <input class="input" type="text" placeholder="Text input" value="{{ slideShowInterval }}">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Transport</label>
+                <div class="control">
+                    <button class="button is-primary is-rounded">Pause</button>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+</body>
+
+</html>

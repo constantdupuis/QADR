@@ -28,7 +28,7 @@ class RemoteControlRouter{
                 sectionsStatus.push( new SectionStatus(element, currentSection === element));
             });
 
-            res.render('remoteConfig', {
+            res.render('remoteConfigBS', {
                 currentSection : this.repo.remoteParameters.getSection(),
                 sections : this.repo.remoteParameters.getSections(),
                 slideShowInterval : this.repo.remoteParameters.getSlideShowInterval(),
